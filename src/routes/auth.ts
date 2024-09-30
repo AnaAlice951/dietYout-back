@@ -19,7 +19,7 @@ router.post('/signin', async (req, res) => {
   }
 
   const { data, error, status } = await supabaseClient
-    .from('students')
+    .from('accounts')
     .select('*')
     .eq('email', credentials.email)
     .limit(1)
@@ -64,54 +64,5 @@ router.post('/me', async (req, res) => {
   }
 });
 
-router.get('/training', async (req, res) => {
-  const { students_id, day } = req.query;
-
-  const validDays = [
-    'domingo',
-    'segunda-feira',
-    'terça-feira',
-    'quarta-feira',
-    'quinta-feira',
-    'sexta-feira',
-    'sábado',
-  ];
-
-  if (!students_id) {
-    return res.status(400).json({
-      error: 'O parâmetro "students_id" é obrigatório.',
-    });
-  }
-
-  if (day && !validDays.includes(day as string)) {
-    return res.status(400).json({
-      error:
-        'O parâmetro "day" deve ser um dia da semana válido em inglês (e.g., "monday").',
-    });
-  }
-
-  let query = supabaseClient
-    .from('training')
-    .select('*')
-    .eq('students_id', students_id);
-
-  if (day) {
-    query = query.eq('day', day);
-  }
-
-  const { data, error, status } = await query;
-
-  if (error && status === 404) {
-    return res.status(404).send({
-      message: 'Error',
-    });
-  }
-
-  if (error) {
-    return res.status(500).json(error);
-  }
-
-  return res.json(data);
-});
 
 export default router;

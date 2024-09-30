@@ -4,7 +4,8 @@ import cors from 'cors';
 
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
-import exercisesRoutes from './routes/exercises';
+import mealsRoutes from './routes/meals';
+import recipesRoutes from './routes/recipes';
 
 dotenv.config();
 
@@ -16,7 +17,8 @@ app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
-app.use('/exercises', exercisesRoutes);
+app.use('/meals', mealsRoutes);
+app.use('/recipes', recipesRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
